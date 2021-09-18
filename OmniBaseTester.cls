@@ -55,7 +55,13 @@ benchmarkCommitNewObjects
 
 test1
 	| db |
-	[db := OmniBase createOn: self testDir] ensure: [db isNil ifFalse: [db close]]!
+
+	(File exists: self testDir)
+		ifFalse: [ File createDirectory: self testDir ].
+	[ [ 
+			db := OmniBase createOn: self testDir ]
+			on: Win32Error 
+			do: [ :sig | sig exit: nil ] ] ensure: [ db ifNotNil: [ db close ] ]!
 
 test10
 	"Test basic B-Tree dictionary functionality."
@@ -509,25 +515,6 @@ testAll
 		test15;
 		test16!
 
-testAllAgain
-	self
-		test2;
-		test3;
-		test4;
-		test5;
-		test6;
-		test7;
-		test8;
-		test9;
-		test10;
-		test10a;
-		test11;
-		test12;
-		test13;
-		test14;
-		test15;
-		test16!
-
 testCollection
 
 	| coll |
@@ -582,7 +569,6 @@ testDir
 !OmniBaseTester class categoriesFor: #test8!public!testing! !
 !OmniBaseTester class categoriesFor: #test9!public!testing! !
 !OmniBaseTester class categoriesFor: #testAll!public!test! !
-!OmniBaseTester class categoriesFor: #testAllAgain!public!test! !
 !OmniBaseTester class categoriesFor: #testCollection!public!testing! !
 !OmniBaseTester class categoriesFor: #testDir!public!testing! !
 
