@@ -1,1 +1,3 @@
 *.pac linguist-detectable=false
+*.cls linguist-detectable=false
+*.pax linguist-detectable=false
